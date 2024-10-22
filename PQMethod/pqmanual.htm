@@ -1,0 +1,1717 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="Author" content="Peter Schmolck">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>PQManual</title>
+</head>
+
+<body>
+
+<h1 align="center"><font face="Arial,Helvetica">PQMethod Manual<br>
+</font><font size="1" face="Arial,Helvetica">Distributed with the
+PQMethod package<br>
+Location of most recent version: </font><font size="1" face="Arial,Helvetica"><a target="_blank" href="http://schmolck.org/qmethod/pqmanual.htm">http://schmolck.org/qmethod/pqmanual.htm</a>&nbsp; <br>
+</font></h1>
+<div align="center"><center>
+
+<pre>+---------------------------------------------------+
+|                  PQMethod - 2.35                  |
+|                     (Mar 2014)                    |
++---------------------------------------------------+
+|             by <a href="mailto:Peter.Schmolck@unibw-muenchen.de">Peter.Schmolck@web.de</a>              |
+|      Adapted from Mainframe-Program QMethod       |
+|              by John Atkinson at KSU              |
++---------------------------------------------------+
+|                 The QMethod Page:                 |
+|            <a href="http://schmolck.org/qmethod/">http://schmolck.org/qmethod/</a>           |
++---------------------------------------------------+
+</pre>
+</center></div>
+
+<p align="left"><em><br>
+New in 2.35: In the context of securing compatibility with 64bit versions of Windows as well as with Linux,<br>
+  </em><i><a href="#states">STATES</a></i><i>&nbsp; </i><em>and <a href="#view">VIEWLIST</a> (replaces: 'View project files') were updated<br>
+      <br>
+New in 2.33 &amp; 2.32 : minor bugs </em><em>cleared </em><br>
+<em>New in 2.31: <a href="#tsv">Additional data output format .tsv </a></em><span style="font-style: italic;"><br>
+  </span><em>New in 2.30: <a href="#qcent">Option of an alternative Centroid method (Horst 5.5)</a> <br>
+New in 2.20: </em><a style=" font-style: italic;" href="#factor_scores">'Exact'&nbsp; factor scores (á la SPSS)</a><span style="font-style: italic;">&nbsp;</span><em></em><em></em></p>
+
+
+
+<hr size="0">
+
+<h2>Contents</h2>
+
+<ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#installing">Installing and Launching PQMethod</a></li>
+    <li><a href="#procedure">General Flow and Procedure</a><ol>
+            <li><a href="#states">STATES</a> - Creation of the
+                statement text </li>
+            <li><a href="#qenter">QENTER</a> - Enter the data
+                from individual q sorts <br>
+</li>
+            <li><a href="#qcent">QCENT</a> - Perform Centroid
+                factor analysis</li>
+            <li><a href="#qpca">QPCA</a> - Perform Principal
+                Components factor analysis</li>
+            <li><a href="#qrotate">QROTATE</a> - Hand rotation of
+                factors</li>
+            <li><a href="#qvarimax">QVARIMAX</a> - Varimax
+                rotation of factors</li>
+            <li><a href="#qanalyze">QANALYZE</a> - Perform a Q
+                analysis of rotated factors<ul>
+                    <li><a href="#printing">Printing</a> <br>
+</li>
+<li><a href="#factor_scores">Factors, Factor Scores, Factor Arrays, and 'Exact' Factor Scores</a> <br>
+</li>
+
+                    <li><a href="#exporting">'Exporting' factors</a></li>
+                </ul>
+            </li>
+            <li><a href="#view">VIEWLIST</a> - View output file &lt;project&gt;.lis <br>
+</li>
+        </ol>
+    </li>
+    <li><a href="#algorithms">Algorithms and formulas</a></li>
+    <li><a href="#appdxa">APPDX A</a> - File Descriptions</li>
+    <li><a href="#appdxb">APPDX B</a> - Example of Hand Rotation
+        (QROTATE)</li>
+</ul>
+
+<hr>
+
+<h2><a name="about"></a>About</h2>
+
+<p>PQMethod is a statistical program tailored to the requirements
+of Q studies. Specifically, it allows to easily enter data
+(Q-Sorts) the way they are collected, i.e. as 'piles' of
+statement numbers. It computes intercorrelations among Q-Sorts,
+which are then factor-analysed with either the Centroid or
+Principal Component method. Resulting factors can be rotated
+either analytically (Varimax), or judgmentally with the help of
+two-dimensional plots. Finally, after selecting the relevant
+factors and 'flagging' the entries that shall define the factors, the
+analysis step produces an extensive report with a variety of
+tables on factor loadings, statement factor scores,
+discriminating statements for each of the factors as well as
+consensus statements across factors, etc. </p>
+
+<p>PQMethod was adapted, revised and is maintained by Peter
+Schmolck. The FORTRAN-77 code on which it is based was originally
+written for the mainframe by John Atkinson under the guidance of
+Steven Brown at Kent State University. PQMethod is free, with all
+the usual legal disclaimers, of course. The most recent version
+can be downloaded from the <a href="http://schmolck.org/qmethod/">QMethod
+Page</a>.&nbsp; <br>
+</p>
+<p>The seemingly antiquated programming language FORTRAN is quite 
+useful still for implementing mathematical-statistical algorithms, and 
+additionally,
+PQMethod's FORTRAN-77 source code can easily be ported to all types of 
+computers. But FORTRAN is not itself designed for graphic user interface
+ with mouse support, and it has no built-in possibilities for displaying 
+results in graphic form. PQMethod users have learned to accept that 
+PQMethod is no point-and-click Windows program, but graphic rotation and
+ flagging of factors in the original, text-only mode (can be invoked 
+still as the "old" version of QROTATE)&nbsp; was actually worse than 
+just awkward to use. Fortunately, in 1999 Andreas Zollorsch, a student 
+assistant at that time, created a user friendly software for that 
+purpose as a separate program (PQROT)&nbsp; that can automatically be 
+launched from within PQMethod. Unfortunately, however, PQROT, written in
+ Turbo-Pascal, cannot easily be ported to platforms that do not fully 
+support MS-DOS, like Windows Vista and later. Therefore, beginning in 
+May 2008, PQMethod for Windows was provided as a package bundled with 
+the free DOS emulator software <a href="http://www.dosbox.com/">DOSBox</a>.
+ In the same vein, a DOSBox version of PQMethod has also been created 
+for Mac OS X. In February 2012 I eventually managed to port the PQROT 
+Turbo Pascal code to the windows version of <i>free pascal</i>, and since version 2.3x there exist windows versions of PQMethod.exe and PQROT.exe that do not require DOSBox anymore. <br>
+</p>Following the tradition originating from the original, mainframe 
+QMethod software, all steps from entering sorts and statements to the 
+analysis and viewing the results can be accomplished without leaving the
+ program. For entering and editing the statements and for viewing the 
+results, external software is required, and therefore the PQMethod 
+distribution package until version 2.33 contained two additional tiny
+freeware DOS-programs for editing and viewing
+text files, the editor <i>SSH ED (=ed.com)</i> authored by <a href="http://shh.thathost.com/">Sverre H. Huseby</a>, and the text viewer <i>view86.com</i> which originates from the <a href="http://www.aldridge.com/">Aldridge Company</a>.
+ Because 64bit versions of Windows 7 and later discontinued all DOS 
+compatibility, the two tools were removed from the PQMethod 
+distribution&nbsp; version 2.35 (except for the DOSBox version). For 
+more details on editing and viewing statements and the output listing 
+see sections <a href="#states">STATES</a>&nbsp;&nbsp; and <a href="#view">VIEWLIST</a>. <br>
+<br>
+PQMethod comes with the <i>'Lipset'</i> example data set which
+is identical to the one used in the 'Technique and Method'
+chapter of Steven Brown's textbook [Brown, S.R. (1980). <i>Political
+subjectivity: Applications of Q methodology in political science</i>.
+New Haven: Yale University Press]. The nine sorts -- a very small
+P sample, even in terms of Q -- were selected by Steven Brown
+from a larger sample of cases for didactical purposes. 
+
+<p>This <i>manual</i> itself originates from the QMethod-Help
+file which is part of the original QMethod system for the
+mainframe, and authored by John Atkinson (and / or Steven Brown).</p>
+
+<hr width="60%">
+
+<p><font size="4"><b><i>Requirements:</i></b></font> PQMethod for 
+Windows now runs on all versions of Windows. There also exists an MS-DOS
+ version of PQMethod that can be run with the free MS-DOS emulator <a href="http://www.dosbox.com/">DOSBox</a>
+ which is available for Mac OS X and Linux (and Windows). For both, Mac 
+and Windows, exist PQMethod download packages that are bundled together 
+with the DOSBox emulator. The PQMethod.exe executable for MS-DOS 
+contained in the package may not be the latest release, but can be 
+updated by downloading a separate zip file with the latest release of 
+the executable (and accompanying PQManual). <br>
+</p><p><font size="4"><b><i>Limitations:</i></b></font> The maximum
+values allowed in PQMethod are <i>299 sorts</i> (subjects) and <i>200
+statements</i>. The maximal number of factors that will be
+extracted is <i>8 factors</i>. The Q-Sort design may have a
+maximum of <i>13 piles</i> or columns, with a maximal <i>pile
+size of 50</i>. The maximal length of statements displayed in the
+output listing is <i>60 characters</i> (excess of text will be
+truncated).<br>
+</p>
+
+<hr>
+
+<h2><a name="installing"></a>Installing and Launching PQMethod <br>
+</h2>The present versions of the PQMethod download packages do not 
+automatically self-install the software. At the moment, instructions for
+ installing PQMethod can be found on the PQMethod download page only. <br>
+<br>
+<br>
+<hr>
+
+<h2><a name="procedure"></a>General Flow and Procedure</h2>
+
+<p>The system is composed of several pieces which lead from the
+individual Q-Sorts which you collect to a final analysis of the
+data. The first option, STATES, allows you to edit a file where
+you will enter the text of the q-sort statements. These are not
+used again until the QANALYZE routine at the end. Next is a
+routine called QENTER which allows you to enter the data directly
+from the sorts that you have collected. The next step consists in
+creating a correlation matrix from the raw sorts, and performing
+a factor analysis on the correlation matrix. This is the first
+point where you have to choose between two alternatives: Select
+QCENT for a Centroid factor analysis, or QPCA for Principal
+Component analysis. After that, you need to choose a rotation
+method, and PQMethod gives you the choice of QROTATE, which
+allows you to manually rotate the factors, or QVARIMAX, which
+performs a varimax rotation on the factors. Finally, the rotated
+factor matrix is input to the QANALYZE routine, which
+differentiates the factors based on the original q-sort
+statements. <br>
+</p>
+
+<hr>
+
+<p>Now, let's look at the overall procedure and then the
+individual routines in more detail.</p>
+
+<p>For any study, you need to establish one name. This name will
+be the file name of all files associated with the project, so it
+must conform to the standards of MS-DOS filenames: from 1 to 8
+characters. For the example that follows, we will use the name <i>mystudy</i>.
+<b><i>Note:</i></b> Using the name <i>lipset</i> instead would
+give access to the ready-to-use example data set. You can skip
+routines 1 and 2 and start with 3 - QCENT or 4 - QPCA for an
+analysis of the 'Lipset study' example.</p>
+
+<p>When you start PQMethod you will be asked for the project
+name, and after entering the name ('mystudy') you will see Screen
+1:<br>
+&nbsp;</p>
+
+<table cols="1" border="2" width="100%">
+    <tbody><tr>
+        <td><pre>  Enter [Path and] Project Name:
+<b>mystudy
+
+</b> Current Project is ...  c:/pqmethod/projects/mystudy
+ Choose the number of the routine you want to run and enter it.
+
+  1 - STATES <tt>  - Enter (or edit) the file of statements
+  2 - QENTER   - Enter q sorts (new o</tt>r continued)
+  3 - QCENT    - Perform a Centroid factor analysis
+  4 - QPCA     - Perform a Principal Components factor analysis
+  5 - QROTATE  - Perform a manual rotation of the factors
+  6 - QVARIMAX - Perform a varimax rotation of the factors
+  7 - QANALYZE - Perform the final Q analysis of the rotated factors
+  8 - VIEWLIST - View output file mystudy.lis
+
+  X - Exit from PQMethod
+
+
+
+    Last Routine Run Successfully - (Initial)
+</pre>
+        </td>
+    </tr>
+</tbody></table>
+
+<p align="center">Screen 1 </p>
+
+
+
+<p>From this point, we simply choose the routine we want to run,
+starting with STATES. <br>
+</p>
+
+<p>Though STATES is #1 in the main menu, you can as well postpone
+execution until you are ready to perform the final QANALYZE
+routine.</p>
+
+<h3><a name="states"></a>1 - STATES</h3>
+
+<p>Choosing option #1 provides the possibility to enter the
+statements: For this purpose PQMethod opens an external editor program 
+for you (Notepad.exe in the Windows version of PQMethod). Every 
+statement must be typed as a single line (without empty
+lines between them). Note that all records will get truncated to
+60 characters in the final output listing, since that is the
+maximum for statement text in PQMethod.&nbsp; You might think about
+appropriately abbreviating longer statements, instead of having
+them truncated by the program. <br>
+</p><p>It is essential that the
+statements are in the correct order (the same as the numbers that
+were used to enter in the q-sorts). You do not need to number
+each statement, however, as they will be labeled on the output in
+the QANALYZE module. Just be sure to enter the statements in the
+correct order. When you are finished with
+editing (dont't forget the final <em>hard return</em> after the
+last statement!), exit the editor program for returning to
+PQMethod. As a matter of fact, you can also create your statements file with the name &lt;project&gt;.sta (<i>e.g., mystudy.sta</i>) on your own, and copy it into the projects folder where your other &lt;projects&gt;.* files are. <br>
+</p>
+<p>Since version 2.35 of PQMethod the somewhat awkward alternatives 
+of&nbsp; 'importing' statements from an existing file or entering 
+statements without an editor program were discarded, as well as the 
+automatic cutting of the statements to 60 characters. As mentioned above, the QANALYZE module cannot print more 
+than 60 characters of statement text. But there is no such limit in 
+statement length&nbsp; for the pair of little tools, <a href="http://schmolck.org/qmethod/addfls.htm">PQM2HTM / PQM2MHTM</a>&nbsp; that can be used to visualize every sort of your project's .dat file in a q-sort format. </p>
+&nbsp;<br>
+<h3><a name="qenter"></a>2 - QENTER</h3>
+
+<p>QENTER is used to enter data directly from the q-sorts you
+have administered. The file that is created by QENTER can be
+created by another source, but it must be modified for entry to
+factor analysis, etc. See the appendix for details about record
+formats. </p>
+
+<p>When you run QENTER, you don't have to enter all of the
+q-sorts at one time. You can quit whenever you like and continue
+data entry the next time you run QENTER. This is the first
+question QENTER asks you. However, if this is the beginning of
+data entry, you will need to enter a title for the study (up to
+68 characters), and all of the details of the q-sort design used.</p>
+
+<p>The screen you see at first will be as in Screen 2. Note that
+you will only enter the title if you are <i>not</i> continuing
+data entry.<br>
+&nbsp;<br>
+&nbsp;</p>
+
+<table cols="1" border="2" width="100%">
+    <tbody><tr>
+        <td><pre>    Last Routine Run Successfully - (Initial)
+
+<b>2
+
+</b> Checking old input data file ....
+
+ Enter the title of your study to a max of 68 characters.
+ ____________________________________________________________________
+
+<b>MYSTUDY My first attempt to do a Q analysis</b>
+</pre>
+        </td>
+    </tr>
+</tbody></table>
+
+<p align="center">Screen 2 <br>
+</p>The details needed will be: 
+
+<ol>
+    <li>The total number of statements that were sorted.</li>
+    <li>The value of the leftmost column of the q-sort. It is
+        assumed that the leftmost column has a lower value than
+        the rightmost column, so that values will range from,
+        say, -4 to +4, or from 1 to 9. The maximal number of
+        columns is 13, with values ranging from either -6 to +6,
+        or from 1 to 13. In general, there should be an unequal
+        number of categories to provide for a neutral midpoint.
+        If that is not the case, PQMethod issues a warning, but
+        accepts the design.</li>
+    <li>The rightmost column value (see above).</li>
+    <li>The number of rows in each column, from left to right.
+        This should exactly match your q-sort design. The design
+        itself should be symmetric -- that is, the number of rows
+        on the left should be the same as those of the
+        corresponding columns on the right. In addition, the
+        design must be unimodal -- that is, the number of rows
+        must not decrease from either left or right to the
+        center.</li>
+</ol>
+
+<p>Screen 3 shows what this detail entry would look like.
+Remember, this is only entered the first time for any design. A
+file containing this data is created so you can continue entering
+data later or go back and modify or delete previously entered
+sorts. <br>
+&nbsp; </p>
+
+<table cols="1" border="2" width="100%">
+    <tbody><tr>
+        <td><pre> How many q statements are there?
+<b>33
+
+</b> Enter the leftmost column value (e.g. -5):
+<b>-4
+
+</b> Enter the rightmost column value (e.g. 5):
+<b>4
+
+</b> Enter the Number of Rows for each Column from -4 to  4.
+  For Example:  2 3 3 4 4 4 3 3 2 :
+<b>2 3 4 5 5 5 4 3 2</b>
+</pre>
+        </td>
+    </tr>
+</tbody></table>
+
+<p align="center">Screen 3 </p>
+
+<p>Now you are ready to begin entering q-sorts. The first screen
+you will see is the main menu, from which you can also change,
+delete, or show any sort, as well as query the current Q design.
+The first time through, of course, we will choose to <i>add</i> a
+new sort, as shown in Screen 4 (note that the request can be a
+lower case letter).</p>
+
+<p>On many of the following screens, you are asked to enter
+information at various prompts. On virtually any of those
+screens, you can always abort the current process by entering the
+the words QUIT or STOP.<br>
+&nbsp;<br>
+&nbsp;</p>
+
+<table cols="1" border="2" width="100%">
+    <tbody><tr>
+        <td><pre> Ready to process another sort.
+ Enter one of the following codes:
+
+ A - to add a new sort
+ C - to change a previous sort
+ D - to delete a sort
+ S - to show a previous sort
+ Q - to query status of this study
+ X - to exit QENTER (stop entering/changing sorts)
+
+<b>a</b>
+</pre>
+        </td>
+    </tr>
+</tbody></table>
+
+<p align="center">Screen 4 </p>
+
+<p>When you add a sort, you will be asked at first to enter an
+identification code (Sort Id) for the sort or person you are
+going to enter next. <br>
+</p>
+
+<p>Then you will be prompted for the values for a single person
+one column at a time, starting from the left (lowest value)
+column. Although the design has to be symmetrical, the individual
+q-sorts do not, so you can enter 3 values, for example, even if
+the design says the column only contains 2. The entries do not
+need to be in any order, such as ascending, but there must be a
+space between each number. An example of data entry is shown in
+Screens 5 and 6.<br>
+&nbsp;<br>
+&nbsp;</p>
+
+<table cols="1" border="2" width="100%">
+    <tbody><tr>
+        <td><pre>Enter identification code for subject no.  1 
+ (A case label consisting of max. 8 characters) 
+<b>MySt01F</b>  
+ Enter the Sort Values for Subject  1 MySt01F  
+Enter the Statement Numbers, Separated by Spaces, 
+  for Column -4: 
+<b>16 20</b> 
+Enter the Statement Numbers, Separated by Spaces, 
+  for Column -3: 
+<b>18 17 30</b> 
+Enter the Statement Numbers, Separated by Spaces, 
+  for Column -2: 
+<b>3 5 31 32</b> 
+Enter the Statement Numbers, Separated by Spaces, 
+  for Column -1: 
+<b>1 15 19 8 10</b> 
+Enter the Statement Numbers, Separated by Spaces, 
+  for Column  0: 
+<b>26 2 4 7 9</b> 
+Enter the Statement Numbers, Separated by Spaces, 
+  for Column  1: 
+<b>11 6 12 25 24</b> 
+</pre>
+        </td>
+    </tr>
+</tbody></table>
+
+<p align="center">Screen 5 </p>
+
+<table cols="1" border="2" width="100%">
+    <tbody><tr>
+        <td><pre> (Continuation of Subject  1 MySt01F )
+
+ Enter the Statement Numbers, Separated by Spaces,
+   for Column  2:
+<b>13 22 28 29
+</b> Enter the Statement Numbers, Separated by Spaces,
+   for Column  3:
+<b>14 21 23
+</b> Enter the Statement Numbers, Separated by Spaces,
+   for Column  4:
+<b>27 33</b>
+</pre>
+        </td>
+    </tr>
+</tbody></table>
+
+<p align="center">Screen 6 </p>
+
+<p>When you have entered all of the values, you will be shown a
+picture of what this q-sort looks like. If there are mistakes,
+such as numbers too large or appearing more than once, you will
+have to make corrections. You can also make any changes you want
+even if the sort is OK. Any corrections are made one column at a
+time, so you may have to go through this process a couple of
+times to make changes. An example is shown in Screen 7.<br>
+&nbsp;<br>
+&nbsp;</p>
+
+<table cols="1" border="2" width="100%">
+    <tbody><tr>
+        <td><pre>              -4   -3   -2   -1    0    1    2    3    4
+            !----!----!----!----!----!----!----!----!----!
+            ! 16 ! 18 !  3 !  1 ! 26 ! 11 ! 13 ! 14 ! 27 !
+            !----!----!----!----!----!----!----!----!----!
+            ! 20 ! 17 !  5 ! 15 !  2 !  6 ! 22 ! 21 ! 33 !
+            !----!----!----!----!----!----!----!----!----!
+                 ! 30 ! 31 ! 19 !  4 ! 12 ! 28 ! 23 !
+                 !----!----!----!----!----!----!----!
+                      ! 32 !  8 !  7 ! 25 ! 29 !
+                      !----!----!----!----!----!
+                           ! 10 !  9 ! 24 !
+                           !----!----!----!
+ SubjNo:  1  ID: MySt01F
+
+ The Sum is   0.00,  and the Mean is  0.00,  for Subject  1 MySt01F
+ The Sort is OK, Do You Want to Change It Anyway? (y/N):
+</pre>
+        </td>
+    </tr>
+</tbody></table>
+
+<p align="center">Screen 7 </p>
+
+<p>If you just hit the enter key in response to the above
+questions, the default answer will be, NO, no changes, and YES,
+enter another sort. If you do say you want to change the sort
+anyway, or if there is some problem, such as a missing number or
+a number entered twice (there is <i>no</i> provision for missing
+data at this time), then you will enter the change process.</p>
+
+<p>In the example above, suppose you wanted to exchange the
+statements 13 and 14 in the sort. When asked which row to change,
+you could give either '2' or '3'. If you first changed column 2
+to contain the numbers 14, 22, 28, &amp; 29, you would then have
+two 14's and no 13. So you could then change column 3 to contain
+13, 21, &amp; 23. Most changes will require a couple of
+iterations such as this.</p>
+
+<p>When you are done entering q-sorts, you would answer 'N' to
+the second question:</p>
+
+<p><tt>&nbsp;&nbsp; Do you want to enter another sort? (Y/n)</tt><br>
+<tt>&nbsp;&nbsp; </tt><b><tt>n</tt></b><br>
+<font size="2">(If you've inadvertently hit the enter key for Yes
+instead of answering No, keep inputting empty inputs until the
+question appears again.)</font></p>
+
+<p>This will take you back to the QENTER menu where you can
+choose other options if you wish. If you choose option X from
+that menu, then the standard data file will still be written out,
+so you can move on to the next stage (either QCENT or QPCA), but
+also have the option of going back and adding, deleting, or
+modifying sorts later.</p>
+
+<p>When you exit QENTER, control returns to the menu.</p>
+
+<p><i>Note on PQMethod's three raw data file formats.</i> There are 
+essentially two formats of the Q-sort data matrix that are supported, 
+and
+automatically generated by QENTER: (a) the regular form with
+sorts as rows and items as columns, and (b) the old inverted form
+(used by mainframe QMethod and PQMethod 1.xx) with items as rows
+and sorts as columns. The file &lt;project&gt;.dat, which is
+required as input to QCENT / QPCA and to QANALYZE contains the
+data matrix in the regular format (a). The file
+&lt;project&gt;.raw which is of the form (b) might be useful if
+you wish to analyse your Q-sort data with another statistical
+software package. QENTER always outputs the data entered in both
+file versions, and it also converts between file formats
+automatically. If only either one of the two files exists, the
+other one will be created. For instance, if you have got the file
+oldstudy.raw that you once created with a former version of
+QMethod software, all you need to do for creating the
+oldstudy.dat file is to start QENTER once, and e(X)it it
+immediately again. Since version 2.31, an additional, output only, 
+tab-separated, format was added that might prove useful in the future 
+for importing the PQMethod generated data into another, modern Q 
+software. For further details see <a href="#appdxa">Appendix
+A</a>.<br>
+&nbsp;</p>
+
+<h3><a name="qcent"></a>3 - QCENT and&nbsp;<a name="qpca"></a>4 -
+QPCA</h3>
+
+<p>QCENT (Centroid analysis) and QPCA (PCA, Principal Components
+analysis) are <i>alternative</i> options for extracting
+(unrotated) factors. Centroid analysis, the method of choice for
+Stephenson and his followers, is not much used outside the Q
+community nowadays, whereas Principal Components analysis is the
+default method of factor extraction in statistical packages like
+SPSS. </p>
+
+<p>Both, QCENT and QPCA first take the rawdata file created by
+QENTER and compute and output a correlation matrix into a file
+with file-name extension .cor. Then, an unrotated factor loadings
+file (.unr) is created by the application of the respective
+method of factor analysis. <br>
+</p>
+<p>Since version 2.30, QCENT offers the option of choosing between two 
+methods of Centroid extraction, the customary method described in <span style="font-weight: bold;">Brown </span>(1980), and <span style="font-weight: bold;">Horst</span>'s (1965) method with iterative solutions for communalities. <br>
+</p>
+<p><span style="font-weight: bold; font-style: italic;">Brown Centroids:</span> As a default, it suggests the <i>'magical number' of
+seven Centroids</i> to extract. However, you can change that; the
+maximal number of factors PQMethod can handle is eight. In fact,
+under normal conditions, there is no good reason for selecting
+less than 7 factors, since upon rotation of factors you can
+choose how many of the unrotated factors to use. <i>QPCA</i>
+always computes <i>eight factors</i>, which is the maximum number
+of factors PQMethod can process. This does not mean that you have
+to take into account all factors up to the eighth for either
+judgmental or Varimax rotation which follow later. <b><i>Note:</i></b>
+In "<span style="font-style: italic;">Brown-Centroid</span>" as well as <span style="font-style: italic;">PCA</span>, <span style="font-weight: bold; font-style: italic;">but not in "Horst-Centroid</span>",&nbsp; the composition of the 1st, 2nd, 3rd, etc. factors
+extracted do not depend in any way on how many (additional)
+factors are extracted altogether. <br>
+</p>
+<p><span style="font-weight: bold; font-style: italic;">Horst's&nbsp; Centroid </span>method
+ uses a somewhat more refined approach in the way the diagonal entries 
+in the correlation matrix are estimated, and it was implemented in 
+PQMethod because it did not show certain irregularities that were found 
+with several data sets when analyzed with the customary Centroid method.
+ <br>
+You can either determine how many factors to be extracted (max. 8) 
+or&nbsp; let the program determine when to stop extracting factors 
+according to what Horst suggested as the limiting level of residual 
+correlations (average r<sup>2 </sup>&lt; 1/NITEMS). Since in this method
+ the final communalities are iteratively entered as diagonal entries in 
+the initial correlation matrix, all factors in a solution depend on the 
+number of factors the user asks to extract. The final average residual 
+correlation is displayed on screen, and the iterated series of 
+communality estimates and the residual correlation matrix are written 
+after the factor loading matrix in the unrotated-factors file (.unr).<br>
+  <br>
+
+
+</p>
+<p><span style="font-weight: bold; font-style: italic;">QPCA </span>computes and outputs all <i>Eigenvalues</i> (and
+corresponding percentage figures) on screen as well as to the
+unrotated-factors file (.unr). The absolute and relative sizes of
+the Eigenvalues are of some importance when deciding on how many
+factors to keep for rotation.<br>
+</p><br>
+<hr size="2" width="100%">Horst, P. (1965) <em>Factor Analysis of Data Matrices.</em> Holt,
+Rinehart and Winston.
+
+
+
+<p>&nbsp;<br>
+&nbsp;</p>
+
+<h3><a name="qrotate"></a>5 - QROTATE</h3>
+
+<p>Now it is time to rotate the factors. You have two options:
+you can rotate the factors by hand, or you can perform a Varimax
+rotation (as described in the next section). You would not
+normally do both, unless you wanted to compare the methods. If
+you choose QROTATE to rotate the factors yourself, you are first
+asked if this is a continuation. If you say 'no', then the file
+output by QCENT or QPCA, respectively, the unrotated factors file
+(.unr), will be the only input. If you say this is a
+continuation, then an intermediate file (.hro) created the last
+time you ran QROTATE is used instead. In either case, at the end
+of this session, a new intermediate file is written out, and you
+always have the option of running QROTATE again and using either
+this file or the original file of unrotated factors (if you want
+to start over). </p>
+
+<dl compact="compact">
+    <dt><b><i>Note</i></b></dt>
+    <dd>Since version 2.08, PQMethod comes with a separate MS-DOS
+        program, PQROT.EXE, for graphical factor rotation. After
+        choosing QROTATE from the main menu you will be asked (if
+        not so, PQROT.EXE was not found in the pqmethod directory
+        on your disk):</dd>
+    <dd><br>
+<tt>&nbsp; Do you want to launch the new PQROT program
+        (Y/n)?</tt><br>
+<br>
+        If you accept, PQROT is launched, and
+        you can continue with performing hand-rotation using
+        high-resolution graphics. PQROT provides, in addition to
+        much more appropriately displaying the individual sorts
+        in the factor plots, a highly improved interface for
+        rotating axes, highlighting cases, flagging factors etc.
+        The details of using PQROT instead of the old, text-mode
+        QROTATE are not documented in this manual. However, you
+        can easily find your way by following instructions on
+        screen, and requesting help pages by pressing <b><i>F1</i></b><i>
+        (I highly recommend inspection of the help pages for
+        finding all available features!)</i>. One point needs
+        mentioning, though: Most input to the program requires
+        just <i>hitting certain keys</i> on the keyboard, <i>without
+        pressing the &lt;ENTER&gt; key</i> (= <b><i>CR</i></b>,
+        carriage return) also.&nbsp; <br>
+</dd><dt><br>
+</dt>
+
+</dl>
+
+
+
+<p>First, QROTATE will list the factor loadings for you, and you
+must then choose which factors you would like to rotate. You will
+work on just one pair of factors at a time, but you can always go
+back to a pair later. Once you establish an appropriate angle
+between factors 1 and 2, you can then rotate 1 and 3, or 2 and 3,
+for instance, without affecting the angle between 1 and 2. Once you have rotated
+the axes to your satisfaction, the current array of factor
+loadings will be displayed again.</p>
+
+<p>You rotate factors simply by giving a number of degrees. A
+positive number rotates the axes clockwise, and a negative number
+counter-clockwise. Your goal is to get clusters of subjects close
+to an axis. This would generate the highest possible loadings on
+that factor for those subjects. In addition, it is advisable to
+attempt to load subjects positively, so you want to do rotations
+which leave subjects close to the positive axes (the ones at 12
+o'clock and 3 o'clock). A rotation of 180 would reverse the
+orientation of both axes, for example. Reversing the orientation
+of one factor only without affecting other factors is possible
+with a little trick: Plot this factor against itself, and then
+rotate the axes 180 degrees. -- <i>The new PQROT provides a
+special function for inverting a factor!</i></p>
+
+<p>If you press &lt;ENTER&gt; without entering a rotation, you
+can then choose another set of factors to rotate.</p>
+
+<p>When you are done rotating, simply press &lt;ENTER&gt; instead
+of the numbers of two factors to rotate.</p>
+
+<p><i>'Flagging' factors:</i> Now you can choose to associate
+particular subjects with factors. This is necessary for input to
+the QANALYZE routine that will come next, so you want to do this
+if you are ready to move on. You can pass if you are going to
+come back and do more rotating later. If you choose to flag
+factors now, press &lt;ENTER&gt;. However, if you wish the
+program to 'pre-flag' factors first, press &lt;<b>p</b>&gt;.</p>
+
+<p>The flags provided automatically by PQMethod may not be
+exactly what you want, but at least you can see how the result of
+flagging the factors might look like, and thereafter you can go
+over each factor in turn, and make your own selections -- or
+accept the pre-flagging for a first test run of QANALYZE. (The
+QANALYZE module calculates a synthetic Q-sort, or <i>factor prototype sort</i>, for each factor
+consisting of a weighted average of the sorts of those subjects
+that were flagged for the factor.)</p>
+
+<p>To flag specific subjects, simply enter the number of the
+factor when asked, and then enter the subjects (sorts) to be
+associated with that factor. After you have done this, the matrix
+is displayed again for you, and you can flag another factor.</p>
+
+<p>When you are done flagging factors, you choose which factors
+you want to write to the output file, the file that will be the
+input to QANALYZE. The type of this file will be 'rotated factor
+matrix' (file extension .rot). The factors are written to the
+file in the order you specify, so you can choose the order that
+is most natural (first write out the factor associated with the
+first subject, etc.).</p>
+
+<p>At least one of the factors written to the output file (.rot)
+must be flagged for at least one subject, 'unflagged' factors are
+automatically dropped by QANALYZE.</p>
+
+<p>If you change your mind later about the subjects flagged, you
+can edit the .rot file and change any flags desired.&nbsp; -- <i>The
+new PQROT provides an easier an secure interface for editing
+flags!!</i></p>
+
+<p>See Appendix B for an example of hand rotation.<br>
+&nbsp;</p>
+
+<h3><a name="qvarimax"></a>6 - QVARIMAX</h3>
+
+<p>If you choose not to rotate the factors yourself, you can
+choose a varimax rotation. QVARIMAX takes in the unrotated matrix
+file (.unr) created by QCENT or QPCA, and asks for the number of
+factors you wish to rotate. If you just press the &lt;ENTER&gt;
+key, <i>all </i>unrotated factors will be rotated to the Varimax
+criterion (not usually to be recommended!). After the VARIMAX
+rotation is performed, you are then given the option to do
+further rotating by hand if you want, or you can simply flag the
+factors and write them out, just as you would if you had done the
+entire rotation by hand. <br>
+&nbsp; </p>
+
+<table cols="1" border="2" width="100%">
+    <tbody><tr>
+        <td><pre>    Last Routine Run Successfully - QPCA
+
+<b>66<br>n </b>Performing VARIMAX rotation...
+ How many factors do you wish to rotate?
+ (Press &lt;ENTER&gt; to rotate all  8 unrotated factors)
+<b>3
+</b> 3 Varimax factors will be output to file c:/pqmethod/projects/lipset.rot
+
+
+ Next, varimax factors will be displayed for additional rotations [optional]
+ and for adding flags [required] - Do you wish to use the
+ new PQROT program for that (Y/n)?
+</pre>
+        </td>
+    </tr>
+</tbody></table>
+
+<p align="center">Screen 8 </p>
+
+<p>Whether you only want to flag factors (which is required
+before running the final QANALYZE step) or do further hand
+rotating, the new PQROT program can be used for both. See section
+(5) QROTATE for details.<br>
+&nbsp;</p>
+
+<h3><a name="qanalyze"></a>7 - QANALYZE</h3>
+
+<p>Finally, you need to choose QANALYZE (#7 from the main menu)
+to give you a complete analysis of the q-sorts you collected. <br>
+&nbsp; </p>
+
+<table cols="1" border="2" width="100%">
+    <tbody><tr>
+        <td><pre><b>7
+
+</b>  PQMethod is going to write the report into the file
+          c:/pqmethod/projects/lipset.lis
+  with max. 132 chars/line and  52 lines/page
+  Do you want to change no. lines/page? (y/N):
+</pre>
+        </td>
+    </tr>
+</tbody></table>
+
+<p align="center">Screen 9 </p>
+
+<p>You may simply press &lt;ENTER&gt; at this point, and accept
+the default of 52 lines/page, since you can repeat this step
+later again. Considerations regarding printing the report listing
+will be discussed later in this section.</p>
+
+<p>QANALYZE uses the statement file (extension .sta) that
+contains the text of all the statements, the raw-data file (.dat)
+that is generated by the QENTER routine (or provided beforehand as a plain text file)&nbsp; and the rotated factor
+loadings (.rot) file that was created by QROTATE or QVARIMAX. In
+addition, just for display purposes, it uses the correlations
+file (.cor), and the unrotated factor matrix file (.unr).</p>
+
+<p>QANALYZE stops processing with an error message if any of the
+required files either is not found or is incomplete (e.g., factor
+loadings in the .rot file not flagged, see section <a href="#qrotate">5-QROTATE</a>). <br>
+</p>
+
+<p>When run, QANALYZE creates a written report in a listing file
+(.lis) that is actually sent to disk, just like all the other
+files in this system. You can view this file with option #8 (see <a href="#view">next section</a>) and look at it on-line, and, after
+finishing PQMethod, (edit and) print it out with your favorite
+text program.<br>
+&nbsp;</p>
+
+<h4><a name="printing"></a>Printing</h4>
+
+<p>Printing the listing file (.lis) is best accomplished with the
+help of a text program (like Word or Wordpad). Having loaded the
+file, choose either landscape or portrait orientation for page
+setup, and select the entire text for formatting type and size of
+font. Be sure to choose a fixed-pitch font (e.g., <i>Courier New</i>)
+and a font size small enough such that lines would not be broken.
+The QANALYZE default for the number of lines/page, 52,
+corresponds to landscape page orientation, and a font size of 8
+(15 pitch, characters per inch). Printing in portrait page
+orientation would allow double the number of lines per page, but
+requires a tiny font size of 6 or 5 (20 or 24 pitch) and somewhat
+reduced margins. <b><i>Note:</i></b> Usuallly, not all of the
+tables produced by QANALYZE are required for interpretations; for
+printing only parts of the report, simply delete the remainder.&nbsp;</p>
+<h4><a name="factor_scores"></a>Factors, Factor Scores, Factor Arrays, and 'Exact' Factor Scores</h4>
+<p>In the PQMethod output factors are referred to in a confusing number 
+of different ways. And because version 2.20 introduces an additional 
+variant, the 'exact' factor scores, it seems appropriate for the updated
+ PQManual to provide a reasonably comprehensive account on the meaning details of factors and their scores. <br>
+</p>
+<p>In Q factor analysis persons (or, more generally: sorts) <span style="font-style: italic;">load </span>on factors, statements have <span style="font-style: italic;">scores </span>on factors. <br>
+</p>
+<p>A factor is <span style="font-style: italic;">defined </span>basically
+ by a selection of persons&nbsp; who unambiguously load highly on the 
+factor, as shown in the&nbsp; factor (loading) matrix. For the <span style="font-style: italic;">interpretation </span>of
+ the factors knowing these persons and their factor loading coefficients
+ is of comparably little value. Of more relevance are the perspectives of these 
+persons as revealed in their individual q-sorts, and the common themes 
+running through their&nbsp; individual views which as a generalized, 
+shared perspective make their sorts correlate highly with one and the 
+same factor.&nbsp; The central goal of the analysis consists in the 
+creation of one idealized, <span style="font-style: italic;">prototype sort</span>
+ for each factor as the best possible, intrinsically coherent, 
+representation of what is general in the individual views associated
+ with the factor. <br>
+</p>
+<span style="font-weight: bold; font-style: italic;">Factor z scores or simply, factor scores:</span>
+ The individual sorts that were "flagged" by the user as the best 
+representatives of the factor are aggregated or "averaged" into one set 
+of statement scores. The exact computational procedure consists in first
+ z-standardizing every sort, and then applying different weights for 
+every sort depending on the sort's factor loading, and computing the 
+weighted average. Finally, every factor score is z-standardized again, i.e. 
+every&nbsp; factor score has the same mean (0) and standard deviation 
+(1), and hence scores are directly comparable across factors. The 
+formula for the factor weights, according to Brown (1980) originates 
+from Spearman (1927): <br>
+<pre style="margin-left: 40px;"><big>w</big><big><sub>ij</sub></big> <big>= a<sub>ij</sub> / (1 - a<sup>2</sup><sub>ij</sub>) </big><br></pre>
+<p>where <var>a<sub>ij</sub> </var>is the factor loading of the <var>i</var>th individual on the <var>j</var>th factor, and <var>w<sub>ij</sub> </var>is
+ the weight. Compared to the regression approach&nbsp; for the 
+computation of exact factor scores (á la SPSS, see below), this 
+is a very simple formula. In effect the weights overproportionally 
+increase the impact of higher loadings on the respective factor. <br>
+</p>
+<p>The way factor scores are computed in Q methodology accomodates the 
+fact that the groupings of persons that are selected as factor 
+representatives do not usually fall into orthogonal positions in factor 
+space, as do the factor axes themselves which are located for 
+representing the configuration of sorts with maximal parsimony. Factor 
+scores therefore usually are correlated to at least a small to medium 
+degree, with the size of the correlations reflecting the relative degree
+ of similarity vs. distinctiveness. <br>
+</p>
+<p>Over-factoring, i.e., rotating more factors than there exist distinct
+ perspectives, results in conspicuously high factor score 
+intercorrelations. A reasonable rule of thumb would not, except for well
+ founded reasons, accept a factor solution with factor score 
+intercorrelations in the order of magnitude of the factor loadings of those sorts that appear suited to represent a factor. <br>
+</p>
+<p><span style="font-weight: bold; font-style: italic;">Ranks:</span> As
+ an intermediate step the factor scores are rank-ordered, and the 
+statements'&nbsp; factor scores with their associated ranks are reported
+ in a synoptic table. <br>
+</p>
+<p><span style="font-weight: bold; font-style: italic;">Factor Arrays with Q-Sort Values:</span>
+ Based on the rank orderings of their factor Z scores, the statements 
+are "sorted" for each factor into the q-sort "slots" from, e.g., -4 to 
++4. It may&nbsp; be noted here that this (non linear) transformation of 
+the factor scores is nothing but a matter of convenience. An array of 
+weighted averages of q-sort arrays that each follows a  forced-choice 
+distribution does <span style="font-style: italic;">not </span>naturally fall into the same form of distribution. <br>
+</p>
+<p><span style="font-weight: bold; font-style: italic;"><a name="exact_factor_scores"></a>'Exact' Factor Scores:</span>
+ What I, for the sake of clarity, call 'exact' factor scores here&nbsp; 
+is the normal version of factor scores outside the Q methodology 
+context. In the case of principal component extraction these factor 
+scores are not estimates only but identical with the factors. They are 
+uncorrelated, and&nbsp; the sorts' correlations with the factor scores 
+do not differ from their factor loadings (except for small rounding 
+deviations). The exact factor scores are <span style="font-style: italic;">not </span>computed if <span style="font-style: italic;">Centroid </span>extraction was selected. 
+They are printed in two different scales, the z- and the T-scale. 
+Compared to the z-scale (mean 0, std dev 1) the T-scale (mean 50, std 
+dev 10) simply has the advantage of non-negative numbers without 
+decimals. This format was chosen because it allows to write the scores 
+out with sufficient precision in the PQMethod data format that allows 
+for two digits only (see next section). <br>
+</p>
+<p>I did not implement the exact factor scores as an alternative to be 
+used for factor interpretation. In my view the orthogonal factors as 
+operationalized by their exact scores are artificial composites 
+incorporating the views of&nbsp; <span style="font-style: italic;">all </span>persons
+
+ with varying positive and negative (!) weights. The main application I 
+had in mind for which the exact factor scores are better suited than the
+ conventional factor arrays lies at the interface between Q methodology 
+and psychometric or survey research applications: If the Q factor 
+loadings shall be used as measures of a person's relative affinities to 
+the perspectives associated with the factors, then the q-sorts of new 
+persons or new samples of persons can be projected into the factor space
+ of the derivation sample by correlating their q-sorts with the exact 
+factor scores from this original sample. For this purpose the exact 
+factor scores are preferable to the conventional Q factor scores 
+(either&nbsp; z-scores or q-sort values) for two reasons: They make use 
+of all available information for explaining&nbsp; the maximal possible 
+amount of variance (in the oiginal sample), and due to their orthogonality they avoid mutual 
+confounding of the factor measures as a consequence of built-in overlap.
+ Another potential application consists in the systematic comparison of 
+the factors from factor analysis solutions with differing numbers of 
+factors. This offers the possibility to see how factors at consecutive 
+steps of analysis (1, 2, 3 ... factors rotated) may appear again with 
+little change or split in two, etc. before dwelling on the detailed 
+interpretation of all the factors from every solution. <br>
+</p>
+<p><br>
+  <span style="font-weight: bold; font-style: italic;">Important note:</span> There is a trick of the trade for splitting a bipolar 
+factor that amounts to saving the same factor, with reversed signs, 
+twice. PQMethod does not check for that irregularity in the factor 
+loading matrix (.rot) and outputs faulty results in the <span style="font-style: italic;">Exact Factor Scores</span> table this case. <br>
+  <br>
+</p>
+<h4><a name="exporting"></a>'Exporting' factors</h4>
+
+<p>Both versions of factor scores are written into files for using the 
+scores as data input for separate analyses. The conventional, q-sort 
+value<i> 'factor arrays'</i>&nbsp; are output into the file <span style="font-style: italic;">fax.dat</span>, the <span style="font-style: italic;">'exact' factor scores</span>&nbsp; (in T-scale values) into the file <span style="font-style: italic;">xfax.dat</span>.
+ PQMethod does not overwrite these output files with every new run, the 
+new data are appended instead at the end of the existing files, every 
+time QANALYZE is run. Every entry in the files is formatted like a 
+PQMethod raw-data
+file, with the first header line containing project name, and
+date and time of the QANALYZE run that produced it. Importing
+factors from <span style="font-style: italic;">fax.dat</span> or from <span style="font-style: italic;">xfax.dat</span> into a PQMethod raw-data file
+<span style="font-style: italic;">(.dat)</span> requires manual editing; see <a href="#appdxa">Appendix A</a>
+for details on how a .dat file has to be set up. <br>
+</p>
+<p>The most typical applications for the <span style="font-style: italic;">conventional factor scores</span> are s<span style="font-style: italic;">econdary factor analysis and 'spiking':</span> <br>
+Secondary or second-order&nbsp; factors in the strict sense are 
+higher-order, or simply: more general, factors that result from a 
+second-step factor analysis of&nbsp; 'primary' factors extracted and 
+obliquely rotated in a first step. This kind of analysis, though 
+technically possible using PQMethod, does not appear to be particularly 
+useful in Q methodology. Q researchers, however, use the term more 
+loosely, when they analyze how factors from <span style="font-style: italic;">different </span>P
+ samples relate to each other. Another technical variant of relating 
+types of perspectives found in one P sample to those of another P sample
+ consists in 'spiking' the data set of the one sample with the factor 
+arrays of the other.&nbsp;</p>
+<p>The<span style="font-style: italic;"> 'exact' factor scores</span> 
+are new in PQMethod, and future will show whether they will be found 
+useful in applied settings where Q methodology based measurement 
+instruments are sought for. The second kind of application suggested 
+above, correlating factors from consecutive factor solutions with one, 
+two, three, four, etc., was introduced as a practical way for 
+structuring the interpretation process. Actually, from there it's only 
+a small step to the intriguing 'bass-ackwards' method for "examining the
+ 
+&nbsp;hierarchical structure of a set of variables, based on factor 
+scores 
+from rotated solutions involving one to many factors" introduced to 
+personality psychology by Lew Goldberg (2006). It's not the place here 
+for giving an introduction to the bass-ackwards method. If I could 
+arouse your curiosity, though, get the Goldberg (2006) paper that 
+contains several examples of graphical displays of hierarchical factor 
+structures, and the tool for creating such diagrams (Levine, Schaaf, 
+&amp; Goldberg, 2005): <br>
+</p>
+Goldberg, 
+        L. R. (2006). Doing it all bass-ackwards: The development of hierarchical 
+        factor structures from the top down. Journal of Research in Personality, 
+        40, 347-358.<br>
+<p>Levitin, D. J., Schaaf, A., &amp; Goldberg, L. R. (2005). Factor 
+diagrammer (Version 1.1b). Montreal: McGill University (computer 
+software) &lt;<a href="http://www.psych.mcgill.ca/labs/levitin/software/factor_diagrammer/">http://<br>
+www.psych.mcgill.ca/labs/levitin/software/factor_diagrammer/</a>&gt;.<br>
+</p>
+<p><br>
+</p>
+
+
+<h3><a name="view"></a>8 - VIEWLIST</h3>
+
+<p>Choosing option #8 transfers control to an external 'viewer program' 
+that opens the output listing, &lt;project&gt;.lis, which was created 
+with <a href="#qanalyze">QANALYZE</a>. In the Windows version of PQMethod, the default 'viewer program' is the Windows Editor, notepad.exe.&nbsp; After
+exiting the viewer program, PQMethod resumes control again.<br>
+</p>
+<p>VIEWLIST replaces the former 'View project files&nbsp; 
+&lt;project&gt;.*' as implemented until version 2.34, which was meant to
+ allow browsing through all the project's files not only the output 
+listing. In the course of discarding the former little DOS tools for 
+editing and viewing PQMethod files, no suitable free Windows software
+ for browsing multiple files was found, and since this functionality 
+deemed not really demanded in a Windows environment, the option #8 
+was&nbsp; redefined. <br>
+</p>
+
+
+<p>The standard viewer program, <i>VIEW86</i>, has its own help
+page accessed by pressing F1, but the most important key
+functions will be given here as well:</p>
+
+<ul>
+    <li><b><i>F4</i></b> &amp; <b><i>F3</i></b> for viewing next
+        &amp; previous files</li>
+    <li><b><i>F2</i></b> for switching between VGA and EGA (more
+        lines displayed)</li>
+    <li><b><i>Q</i></b> for exiting back to PQMethod</li>
+</ul>
+<p><i>Note</i>: Newer versions of Windows may not support MS-DOS programs like <i>VIEW86 </i>any
+ more. But you can always view a PQMethod project file by loading it in a
+ text program like Notepad Editor. Files are free for external access 
+not only after PQMethod is finished but also everytime you stop at the 
+main menu. <br>
+</p>
+
+
+<p><br>
+</p>
+
+<hr>
+
+<h2><a name="algorithms"></a>Algorithms and formulas</h2>
+
+<p>Most computations performed in PQMethod are designed after
+concepts and formulas that are described in </p>
+
+<blockquote>
+    <p>Brown, S.R. (1980). <i>Political subjectivity:
+    Applications of Q methodology in political science.</i> New
+    Haven: Yale University Press</p>
+</blockquote>
+
+<p>For instance, the algorithm used for <strong><i>Centroid
+extraction</i></strong><span style="font-style: italic;"></span>,&nbsp; is fully documented in Brown (1980). <br>
+</p>Among the procedures not included in John Atkinson's original
+version of QMethod is Principal Component Analysis (PCA), and
+'pre-flagging.' The newly (version 2.20) implemented 'exact' factor scores are described in section ' <a href="#factor_scores">Factors, Factor Scores, Factor Arrays, and 'Exact' Factor Scores</a> '.<br>
+
+
+
+
+<p><strong><i>PCA</i></strong> is a standard, and mathematically
+unambiguous procedure, that can be found in standard textbooks on
+factor analysis. I have double-checked its implementation in
+PQMethod against SPSS for several data sets. (The same is true
+for Varimax rotation.)</p>
+
+<p>The <strong><i>pre-flagging algorithm</i></strong> is designed
+to flag 'pure' cases only, according to the rule: Flag loading<big> <b><i>a</i></b></big>
+</p>
+
+<blockquote>
+    <p><b><i>if</i></b>&nbsp; <b>(1)</b> &nbsp; &nbsp;&nbsp; <tt>a</tt><sup><tt>2</tt></sup><tt>
+    &gt; h</tt><sup><tt>2</tt></sup><tt>/2</tt> (factor
+    'explains' more than half of the common variance) <b><i><br>
+    and</i></b> <b>(2) &nbsp; </b><tt>a &gt; 1.96 / SQRT(nitems)&nbsp;</tt>
+    (loading 'significant at p&gt;.05'). </p>
+</blockquote>
+
+<p>Please note that the selection of factor-defining sorts is a
+matter of reasoned judgment, and as indicated by the prefix <i>'pre-'</i>,
+this algorithm&nbsp; is <i>not</i> meant as a definitive
+statistical solution for that -- notwithstanding the possibility
+that your own judgment turns out to greatly coincide with what
+the program suggests. </p>
+
+<p><a name="communalities"></a>Since version 2.11, an additional
+table, <em><strong>"Cumulative Communalities Matrix"</strong></em>,
+is provided right after the unrotated factor matrix. The
+communality,<tt> h</tt><sup><tt>2</tt></sup>, of a sort assesses
+the proportion of its variance accounted for by the factors. <tt>h</tt><sup><tt>2</tt></sup>
+is computed as the sum of the squared factor loadings (<tt>a</tt><sup><tt>2</tt></sup>)
+, and therefore increases with the number of factors extracted.
+Communality coefficients are not affected by factor rotation,
+i.e., rotation of a given number of extracted (unrotated)
+factors, does not change any sort's <tt>h</tt><sup><tt>2</tt></sup>.
+The Cumulative Communalities Matrix is a synoptical table that
+displays the <tt>h</tt><sup><tt>2</tt></sup> coefficients for any
+number of extracted factors one might decide to keep for
+rotation.<br>
+</p><br>
+<br>
+<hr>
+
+<h2><a name="appdxa"></a>APPDX A - File Descriptions</h2>
+
+<p>All files have the filename of the project that is entered
+when PQMethod is first run. The file extension identifies each
+individual file. The only files required for a new run of the
+statistical analyses are the raw-data file (.dat) and the
+statements file (.sta). </p>
+
+<p>File formats are (upwards) compatible with all versions of
+QMethod software, or can be converted with QENTER (old to new
+raw-data formats). The .ent / $HLDENT$ file of version 1.x which
+contained redundant information only, is obsolete since version
+2.0.</p>
+
+<h3>Formats of header lines (files .raw, .cor, .unr, .hro, .rot)</h3>
+
+<p>The first two records are maintained in all project files
+except .sta, .qan, .tsv, and .lis throughout the PQMethod routines. <br>
+&nbsp; </p>
+
+<table border="0" width="100%">
+    <tbody><tr>
+        <td><b>Record</b></td>
+        <td><b>Columns*</b></td>
+        <td><b>Description</b></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><b>1</b></td>
+        <td>1-3</td>
+        <td>number of factors (not used before QCENT / QPCA)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>4-6</td>
+        <td>number of sorts (subjects)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>7-9</td>
+        <td>number of statements</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>10</td>
+        <td>blank</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>11-78</td>
+        <td>title of the study</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><b>2</b></td>
+        <td>1-3</td>
+        <td>leftmost column value for q-sort (e.g., <tt>'-04'</tt>)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>4-6</td>
+        <td>rightmost column value for q-sort (e.g., <tt>' 04'</tt>)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>7-66</td>
+        <td>20 three-digit numbers, column ('pile') sizes for
+        each possible value from -6 to 13</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><b>*</b><i>Note</i></td>
+        <td>All numbers must be <i>right-justified</i> within
+        their column ranges</td>
+    </tr>
+</tbody></table>
+
+<p>&nbsp;</p>
+
+<h3>Files </h3>
+
+<h4>.sta - Statements</h4>
+
+<p>Each record contains the text of one statement. In text
+programs, a record may be referred to as a <i>'paragraph'</i>,
+and a record is finished with a <i>'hard return'</i> or paragraph
+mark. Though the records in this file may be longer, only up to
+60 characters of every record are read in. There must be exactly
+as many records (without empty lines between them) in the file as
+there are statements in the q-sort, and they must agree with the
+numbers assigned to the statements in the sorts given. This file is
+normally created with option #1. Note that statements in an
+existing .sta file will be truncated to 60 characters when
+running the STATES module. <br>
+&nbsp; </p>
+
+<h4>.dat - Q-sort data</h4>
+
+<p>The first two records are standard. Thereafter, each record
+contains the case label (the <i>Sort Id</i>) in columns 1-8 and,
+starting at column 11, the values assigned for that sort for each
+statement. Every response value is a 2-digit (right-justified)
+number. The values of the data will range from the leftmost
+column value to the rightmost column value. </p>
+
+<p>The .dat file is normally created by manually entering q-sorts
+in QENTER. It is required as input for QCENT/QPCA and for
+QANALYZE. As described below, the .dat file can be created by
+QENTER also by way of converting a .raw file. <br>
+</p>
+<p>PQMethod does not check any formal properties of the data read from 
+the .dat file, e.g. it does not care whether or not a sort violated the 
+prescribed forced-distribution. In fact, the calculations performed with
+ the data, i.e., computation of intercorrelations between the sorts and 
+computation of factor scores, do <span style="font-weight: bold; font-style: italic;">not </span>depend
+ on any specific formal properties of the data. It's entirely up to the 
+user to decide whether whatever kind of questionnaire data can be 
+subjected to Q factor analysis with PQMethod. <br>
+</p>
+
+
+<h4>.raw - Q-sort data, transposed (old) format</h4>
+
+<p>This is the old-format raw data file used in versions before
+PQMethod 2.0. It is, however, still supported for input by the
+new version, as well as output in addition to the new format .dat
+file. The first two records are standard and each record after
+that contains the values assigned by each sort for the statement
+in I2 format (2-digits, right-justified) up to a maximal record
+lenght of 80 (40 sorts), continuing on the next record(s) in case
+there are more than 40 (80, ...) sorts. <i>Sort Ids</i>&nbsp; are
+appended after the last record of the data matrix, every Sort Id
+(consisting of max. 8 characters) on a separate record, and in
+the same order as the sorts they designate. If an existing .raw
+file is used as input to QENTER for file conversion, adding the
+Sort Ids at the end of the file is optional --if not provided,
+QENTER generates automatic Sort Ids. </p>
+
+<p>The .raw file is created as output, and may be read as input
+by QENTER according to the following logic: When started, QENTER
+first tries to open the &lt;project&gt;.dat. If that does <i>not</i>
+exist, it next tries to open the &lt;project&gt;.raw. In either
+case, upon exiting, QENTER always writes out <i>both</i> versions
+of the data, the .dat file and the .raw file. Therefore, both
+directions of file conversion work, depending on which data-file
+version exists or does not exist. However, note that QENTER does
+not care for recency or comprehensiveness of the two files: if
+both exist, it is always the .dat which is read in, and the .raw
+which is overwritten! <br>
+</p>
+<h4><a name="tsv"></a>.tsv - Q-sort data, tab-separated-values output file <br>
+</h4>
+<p>This additional data output file is new in&nbsp; version 2.31 to 
+allow for more easily importing PQMethod data into Excel and other 
+modern software. For creating a .tsv file for an existing project with 
+its .dat file, one only needs to select QENTER from the main menue, and e<span style="font-weight: bold; font-style: italic;">X</span>it again. <br>
+</p>
+
+
+<h4>.cor - Correlation matrix</h4>
+
+<p>Contains the two standard records followed by a correlation
+matrix in '(8(F9.5,1X))' FORTRAN-type format. (This format will
+be used by all the matrices in PQMethod.) </p>
+
+<p>Output from QCENT/QPCA, read by QANALYZE for display purposes
+only.<br>
+&nbsp;</p>
+
+<h4>.unr - Unrotated factor-loading matrix</h4>
+
+<p>Normally this file is created by QCENT or QPCA, although it
+can come from another source (e.g., you can compute Principal
+Axes factors for your sorts with SPSS instead of PQMethod's
+Centroids or Principal Components; be sure to create the .unr
+file in the same format as used by PQMethod). Again, the first
+two records are standard, but for the first time the field for
+number of factors is used. The remainder of the file is the
+matrix of factor loadings in '(8(F9.5,1X))' FORTRAN format.
+Normally, there will be one record for every subject and seven or
+eight factors across the file, although the number of factors
+specified in the first record can be anywhere from 2 to 8. </p>
+
+<p>Output from QCENT / QPCA, required as input for QROTATE /
+PQROT, QVARIMAX, and QANALYZE.<br>
+&nbsp;</p>
+
+<h4>.hro - Backup of rotated factor-loading matrix</h4>
+
+<p>This is a temporary file created by QROTATE / PQROT. It keeps
+the latest (intermediate) state of the rotated factors, even if
+you did not explicitely flag and save the rotated factors. In
+this way, you can run QROTATE / PQROT for a second (or third ...)
+time and take in this file which will reflect rotations made
+previously. <br>
+&nbsp; </p>
+
+<h4>.qan - Q-angles</h4>
+
+<p>Following a header, the records indicate the factors and the
+angle of rotation for each hand rotation made. Up to PQMethod version 
+2.11, the content of this file was echoed also in the listing file 
+(.lis). Since
+QROTATE / PQROT cannot always keep track of all rotations that
+may have been performed in more than one session, the .qan rotation 
+history can be misleading, e.g., if after manual rotations a Varimax 
+solution was finally kept for the QANALYZE report. Therefore the 
+rotation history is dropped from the report since version 2.20. <br>
+&nbsp; </p>
+
+<h4>.rot - Rotated factor-loading matrix</h4>
+
+<p>The rotated factor matrix file created by QROTATE / PQROT or
+VARIMAX will look very similar to the .hro file, except that
+first, only those factors that have been specified will be
+written to it, and second, factors are flagged, or should be
+flagged, before you run QANALYZE. There must be at least one flag
+('X' immediately behind the factor loading) for every factor
+(column), and there should rather be no more than one flag for
+any sort (row). <br>
+&nbsp; </p>
+
+<h4>.lis - Listing</h4>
+
+<p>The final report of the Q analysis, the matrix of
+intercorrelations among the sorts, unrotated and rotated
+factor-loading matrices, factor scores, comparing the factors,
+listing the statements that differentiate the factors, etc. </p>
+
+<hr>
+
+<h2><a name="appdxb"></a>APPDX B - Example of Hand Rotation
+(QROTATE)</h2>
+
+<hr>
+
+<p><b><i>Note:</i></b> What follows is the original Appdx B from
+the QMethod-Help of the mainframe QMethod package. Maybe, some
+time somebody might volunteer to write a hand-rotation tutorial
+for PQROT. For the time being I'd suggest to consult the <a href="http://www.pcqsoft.com/tutorial.htm">tutorial</a> for <a href="http://www.pcqsoft.com/">PCQ for Windows</a> (commercial
+Q-software by Mike Stricklin &amp; Ricardo Almeida) which is
+based on the same 'Lipset example' data set, which is packaged
+with PQMethod. When following the <a href="http://www.pcqsoft.com/example.htm">rotational steps</a> in
+that tutorial with PQMethod / PQROT you should be aware, however,
+that PQMethod and PCQ do not use the same algorithm for Centroid
+extraction. The most notable differences for the Lipset data set
+are found for the higher factor numbers. Specifically, factors 6
+and 7 change positions (6 in PCQ is most similar to 7 in PQMethod
+and vice versa), and factors 8 (and in PCQ, no. 9) show no
+similarity at all between the two programs.&nbsp; </p>
+
+<hr>
+
+<p>Following is an example of how QROTATE is used to perform a
+hand rotation of factors. You simply choose this option from the
+main menu of PQMethod and answer the query of whether this is a
+continuation of a rotation or not. If you say "no",
+then the original unrotated factor matrix that was output by the
+factor routine will be used. If you have already run QROTATE,
+however, you can choose to continue that rotation instead, as the
+(partially) rotated factor matrix is always kept when you exit
+from QROTATE. Even if you have tried to rotate some factors, if
+you say that this is not a continuation, then you will start with
+the original unrotated matrix.</p>
+
+<p>When the routine starts, it will present a listing of the
+factor matrix with the entries truncated to fit easily on the
+screen. In the following example, only six sorts were entered, so
+there could be only six possible factors to rotate.</p>
+
+<p>In this first rotation, factors 1 and 2 are chosen. At this
+stage it is likely that we will want to view all of the points on
+the graph so we ask to see all of the variables:</p>
+
+<pre>+----------------------------------------------------------------------+
+|                                                                      |
+|SUBJ     1     2     3     4     5     6                              |
+|  1     47    69    43    21    -1     9                              |
+|  2     57    50    19     9     3     6                              |
+|  3     39    47    16    -6   -17    35                              |
+|  4     44   -61    30   -57     1    16                              |
+|  5     55   -65    35    -1    62    13                              |
+|  6     77   -42    12     6     5    -1                              |
+|PLEASE ENTER YOUR CHOICE OF FACTORS (TWO ONLY)                        |
+|?                                                                     |
+|                                                                      |
+|1 2                                                                   |
+|PLEASE ENTER YOUR CHOICE OF VARIABLES (* FOR ALL)                     |
+|*                                                                     |
+|                                                                      |
++----------------------------------------------------------------------+
+</pre>
+
+<p>At this point we are then asked if we want each point
+represented as the number of the subject or just use asterisks
+for all. Since we have a small number, we ask for the actuall
+numbers: </p>
+
+<pre>+----------------------------------------------------------------------+
+|                                                                      |
+|PLEASE ENTER CHOICE OF GRAPH REPRESENTATION                           |
+|1 -- USING STARS, 2 -- USING NUMBERS                                  |
+|?                                                                     |
+|2                                                                     |
+|                                                                      |
++----------------------------------------------------------------------+
+</pre>
+
+<p>Now, we will see factors 1 and 2 graphed against each other in
+the standard way, with each subject labeled. At this point, we
+will probably want to rotate the factors to locate clusters of
+variables near one factor. In this case, (an unnaturally clear
+example, by the way), it should be obvious that a
+counterclockwise rotation of around 40 degrees would put subjects
+1, 2, and 3 close to the axis of factor 2, and 4, 5, and 6 close
+to that of factor 1. (Remember that there is 90 degrees between
+orthogonal factors, hence the midline would be a 45 degree
+angle.) </p>
+
+<pre>+----------------------------------------------------------------------+
+|                                                                      |
+|                                     1                                |
+|                                     |                                |
+|                            6        |                                |
+|                                     |                                |
+|                       5             |           2                    |
+|                                     |               1                |
+|                        4            |          3                     |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|              -----------------------+----------------------2         |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|PLEASE ENTER ROTATION ANGLE                                           |
+|?                                                                     |
+|-40                                                                   |
++----------------------------------------------------------------------+
+</pre>
+
+<p>We enter the "-40" to indicate a negative, or
+counterclockwise rotation, and the new graph is immediately
+printed on the screen (probably after we have used the
+"clear" key for the "MORE. . ." condition). </p>
+
+<pre>+----------------------------------------------------------------------+
+|                                                                      |
+|                                     1                                |
+|                                     |   6                            |
+|                                   5 |                                |
+|                                  4  |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                2               |
+|              -----------------------+-------------3----1---2         |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|                                     |                                |
+|PLEASE ENTER ROTATION ANGLE                                           |
+|?                                                                     |
+|                                                                      |
++----------------------------------------------------------------------+
+</pre>
+
+<p>It turns out in this case that the "-40" seems to
+have been a very good estimate, and so we need no more rotation
+of these factors. If we wanted to fine tune the rotation a little
+here, we could easily continue to rotate the axes to and fro with
+smaller rotations. (In this case, maybe another "-5"
+would be appropriate.) </p>
+
+<p>Instead, in this case, we just press the enter key, which
+returns us to the factor matrix, but now it reflects the rotation
+we have just made.</p>
+
+<pre>+----------------------------------------------------------------------+
+|                                                                      |
+|SUBJ     1     2     3     4     5     6                              |
+|  1     -8    84    43    21    -1     9                              |
+|  2     11    75    19     9     3     6                              |
+|  3     -1    61    16    -6   -17    35                              |
+|  4     73   -19    30   -57     1    16                              |
+|  5     84   -14    35    -1    62    13                              |
+|  6     86    18    12     6     5    -1                              |
+|PLEASE ENTER YOUR CHOICE OF FACTORS (TWO ONLY)                        |
+|?                                                                     |
+|                                                                      |
++----------------------------------------------------------------------+
+</pre>
+
+<p>Here, we see that the loadings have been greatly affected by
+our rotation, and that the first three subjects load heavily on
+factor two, while the last three load on factor one. </p>
+
+<p>Looking at the matrix, we see that there is still quite a bit
+of variance accounted for by factor three, so perhaps another
+rotation can pick up some of that.</p>
+
+<p>In the same way that we rotated the two factors above, we
+could now choose factors 1 &amp; 3, for example, and rotate them.
+In this particular instance, we would probably choose to look
+only at subjects 4, 5, and 6, however, since those are the three
+that we are interested in loading on factor one. Obviously, this
+process becomes more complicated when there are more than two
+factors to be extracted for analysis.</p>
+
+<p>After several rotations, we arrive at the matrix shown below,
+and now we want to flag the entries that define the factors that
+interest us. In this case, enter a null return to the question of
+which factors to rotate. Just to ensure that we are done, we are
+asked if we are done rotating. Another null return or an explicit
+"N" will then allow us to mark entries.</p>
+
+<pre>+----------------------------------------------------------------------+
+|                                                                      |
+|SUBJ     1     2     3     4     5     6                              |
+|  1      7    92    20    21     0    -7                              |
+|  2     17    76    -5     9     3    -7                              |
+|  3      5    68     0    -5   -16    24                              |
+|  4     79   -13     8   -56     1    19                              |
+|  5     91    -9     8     0    62    15                              |
+|  6     85    12   -21     6     5    -2                              |
+|PLEASE ENTER YOUR CHOICE OF FACTORS (TWO ONLY)                        |
+|?                                                                     |
+|                                                                      |
+|MORE ROTATING? (Y/N)                                                  |
+|                                                                      |
+|YOU CAN NOW ASSOCIATE INDIVIDUAL SORTS WITH FACTORS                   |
+|FOR USE BY THE QANALYZE PROGRAM COMING UP NEXT.                       |
+|DO YOU WISH TO FLAG FACTORS? (ENTER N TO BYPASS)                      |
+|                                                                      |
++----------------------------------------------------------------------+
+</pre>
+
+<p>Again, a null return will be taken to mean that we do wish to
+flag factors, in which the matrix will be repainted and we will
+be asked to state which factor we wish to flag. </p>
+
+<p>We are then asked which subjects (sorts) are to be flagged,
+that is, which sorts define that factor.</p>
+
+<p>In this example, we first choose factor one, and assign 4, 5,
+and 6 to be defining sorts:</p>
+
+<pre>+----------------------------------------------------------------------+
+|                                                                      |
+|SUBJ     1     2     3     4     5     6                              |
+|  1      7    92    20    21     0    -7                              |
+|  2     17    76    -5     9     3    -7                              |
+|  3      5    68     0    -5   -16    24                              |
+|  4     79   -13     8   -56     1    19                              |
+|  5     91    -9     8     0    62    15                              |
+|  6     85    12   -21     6     5    -2                              |
+|ENTER THE NUMBER OF THE FACTOR                                        |
+|                         (ENTER A NULL RETURN WHEN YOU                |
+|                          ARE FINISHED MARKING FACTORS)               |
+|?                                                                     |
+|1                                                                     |
+|ENTER THE NUMBERS OF THE SORTS TO BE FLAGGED,                         |
+|ONE AT A TIME, SEPARATED BY SPACES (E.G. 3 4 8)                       |
+|4 5 6                                                                 |
+|                                                                      |
++----------------------------------------------------------------------+
+</pre>
+
+<p>At this point, the matrix is repainted, and we can flag any
+factor in a similar fashion (or change the one we just did). In
+this example, we now flag factor two. </p>
+
+<pre>+----------------------------------------------------------------------+
+|                                                                      |
+|SUBJ     1     2     3     4     5     6                              |
+|  1      7    92    20    21     0    -7                              |
+|  2     17    76    -5     9     3    -7                              |
+|  3      5    68     0    -5   -16    24                              |
+|  4     79X  -13     8   -56     1    19                              |
+|  5     91X   -9     8     0    62    15                              |
+|  6     85X   12   -21     6     5    -2                              |
+|ENTER THE NUMBER OF THE FACTOR                                        |
+|                         (ENTER A NULL RETURN WHEN YOU                |
+|                          ARE FINISHED MARKING FACTORS)               |
+|?                                                                     |
+|2                                                                     |
+|ENTER THE NUMBERS OF THE SORTS TO BE FLAGGED,                         |
+|ONE AT A TIME, SEPARATED BY SPACES (E.G. 3 4 8)                       |
+|1 2 3                                                                 |
+|                                                                      |
++----------------------------------------------------------------------+
+</pre>
+
+<p>When the matrix is repainted this time, we are finished
+rotating and flagging and are ready to write out the factors to
+be analysed. Thus, we enter a null return to the first question
+to indicate that we do not wish to mark any more factors. </p>
+
+<p>We then decide to write out just the first two factors (since
+these are the only ones that have been flagged), and we can write
+these in any order we wish. In this case, we probably want to
+renumber the two factors so that factor one is defined by the
+first three subjects, so we write out the factors as "2
+1". However, this order is completely optional and will not
+affect the analysis.</p>
+
+<pre>+----------------------------------------------------------------------+
+|                                                                      |
+|SUBJ     1     2     3     4     5     6                              |
+|  1      7    92X   20    21     0    -7                              |
+|  2     17    76X   -5     9     3    -7                              |
+|  3      5    68X    0    -5   -16    24                              |
+|  4     79X  -13     8   -56     1    19                              |
+|  5     91X   -9     8     0    62    15                              |
+|  6     85X   12   -21     6     5    -2                              |
+|ENTER THE NUMBER OF THE FACTOR                                        |
+|                        (ENTER A NULL RETURN WHEN YOU                 |
+|                         ARE FINISHED MARKING FACTORS)                |
+|?                                                                     |
+|                                                                      |
+|WHICH FACTORS WOULD YOU LIKE TO WRITE OUT?  (PUT                      |
+|  THEM IN THE ORDER YOU WANT THEM IN THE OUTPUT FILE)                 |
+|2 1                                                                   |
+|                                                                      |
++----------------------------------------------------------------------+
+</pre>
+
+<p>We are now finished, QROTATE will end, and we will be back at
+the main menu ready to run QANALYZE. </p>
+
+<hr>
+
+<address>
+    Date of last revision: 22 April 2014<a href="mailto:Peter.Schmolck@web.de"><br>
+    Peter.Schmolck@web.de</a> 
+</address>
+
+
+</body></html>

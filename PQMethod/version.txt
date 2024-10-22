@@ -1,0 +1,224 @@
+PQMETHOD UPDATE HISTORY
+=======================
+
+PQMethod RELEASE 2.35 Nov-2014
+------------------------------
+* Bug introduced with version 2.35 (Windows version only) consisting in 
+  scrambled Date and Time output in .lis, fax.dat and xfax.dat cleared.
+
+
+PQMethod RELEASE 2.35 with PQROT 2.0  May-2014
+----------------------------------------------
+* Starting with the DOS version (required for Mac users for running
+  PQMethod under DOSBox), PQROT now offers using alternative keys for
+  F-keys and some of the special keys not easily to be found on the Mac.
+
+
+PQMethod RELEASE 2.35 with PQROT 1.8  Mar-2014
+----------------------------------------------
+* To further secure compatibility with all Windows versions the STATES 
+  and the VIEWLIST (former 'View project files ..') were redesigned, with
+  setting default EDITOR and VIEWER environment variables to notepad.exe
+  in the PQMethod.bat. 
+* Both distributed PQMethod versions, for Windows and for DOS, are compiled 
+  with GFORTRAN, not G77.
+
+
+Release 2.34 Feb-2014
+---------------------
+* This version was updated and tested to be compatible also with GFORTRAN 
+  (for Windows,DOS and Linux) in addition to G77 for DOS and for Windows
+* Specifically, previous versions, when compiled with GFORTRAN, would have 
+  crashed when PQMethod started to write out factor scores to fax.dat 
+  or xfax.dat.
+* In addition, the part in which PQROT is launched after trying to find its
+  directory path, was redesigned. 
+* Release 2.34 is distributed as source code only because the modifications
+  have (nearly) no effect on the functioning of the executable.
+
+Release 2.33 with updated PQROT 1.7 of Sep-2013
+-----------------------------------------------
+* PQMethod itself still version 2.33, but new version (1.7) of add-on 
+  graphical rotation program, PQROT, which now allows resizing its window. 
+
+Release 2.33 Dec-2012
+---------------------
+* Cleared bug that prevented deleting a sort with all zeroes
+
+Release 2.32 Aug-2012
+---------------------
+* Cleared bugs introduced with 2.31, e.g. study status of QENTER did not
+  report number of sorts
+
+Release 2.31 May-2012
+---------------------
+* Added additional .tsv (tab-separated-values) output file format 
+  for easier importing data in other software like excel
+
+Release 2.30 Apr-2012 (not officially published)
+---------------------
+* Implemented the "HORST 5.5" method of Centroid extraction as an optional
+  alternative to the existing Brown (1980) method. 
+* CLeared a minor bug of 2.20 that consisted in not suppressing the output
+  of the table with the "exact" factor scores in case of Centroid extraction.
+* The Turbo-Pascal code of PQROT was successfuly ported to freepascal for windows,
+  and the new PQROT version 1.5 can now be run under all versions of Windows, without 
+  the help of DOSBox. 
+
+
+Release 2.20 Dec-2011
+---------------------
+* SPSS-type, exact factor scores ("XFS") in addition to the Stephensonian 
+  are now computed and output to the .lis and to file XFAX.DAT in T-score 
+  units. Exact factor scores are computed only if QPCA (principal components) 
+  were selected as method of factor extraction.
+* Removed printing the content of the .qan (rotation history) in the .lis 
+* Revised several table headings
+
+
+Release 2.11 Nov-2002
+---------------------
+* Added new "Cumulative Communalities" table for QANALYZE output.
+* Cleared bug in PQROT.exe (significance-test for "flagging" factors
+  was based on No of sorts instead of No of statements)
+
+
+Release 2.10 Aug-2002
+---------------------
+* Some "cosmetic" changes in .lis output (QANALYZE): 
+  - "Correlations Between Factor Scores" instead of "... betw. Factors"
+  - No factor-comparison tables if no. of (rotated) factors = 1 
+  - SortIDs added in table with Means and Std.Dev.s
+* Redesigned STATES to check for .sta file and allow for importing
+  existing statements file (as it was possible before version 2.09 has 
+  introduced the external editor) 
+* Modified error message when QANALYZE does not find "enough 
+  statements" (hint regarding possible missing hard return)
+* An additional SPSS-syntax file, lipset_f.sps, is provided in the 
+  projects sub-directory which demonstrates how to read PQMethod data
+  and statements files with SPSS. 
+* The executable (PQMethod.exe) is distributed in a Windows32 version 
+  only. The DOS version, compiled with DJGPP, is discontinued but can
+  be provided upon request. (The two version do not behave differently
+  but the Windows32 version does not run under DOS-only, Win3.x, OS/2) 
+  
+Bug-Fix 2.09a Nov-2000
+----------------------
+* Bug-fix: 2.09 which should handle up to 299 sorts, in fact crashed
+  in module Varimax when n > 120. Fixed
+
+Release 2.09 Jan-1999
+---------------------
+* Added interface to external editor (launched from STATES) and to 
+  external file viewer (launched from new menu option); inserted
+  freeware programs ed.com and view86.com in distribution package
+* Max. no of sorts is increased from 120 to 299 
+* For date and time output (in header lines of .lis and fax.dat) 
+  a Y2K compliant internal function replaces the less compliant one
+* Created an alernative version of the executable, 'PQMetW32.exe',
+  which does not (should not, at least) differ in any way, except that 
+  it runs on certain hardware (IBM notebooks) where the DOS-Version 
+  fails (requires Win9x or NT)
+* Full path (where the project files reside) and project name are 
+  displayed on screen as well as in the 2nd header line of 
+  QANALYZE output
+* After finishing QANALYZE return to main menue instead of exiting
+* Fixed paging of rotated and unrotated factor loading table
+* Improved trapping errors caused by 'abnormal data': QANALYZE issues
+  a warning in case of zero communalities. QENTER does not accept a
+  sort with zero variance (all items in one pile). When during 
+  computation of correlations a sort with  zero variance is found 
+  PQMethod exits with an error message. 
+* In QENTER, error message added in case pile size exceeds max. of 50
+* PQROT is searched and found in the same directory where PQMethod is,
+  wherever that may be
+* Providing full path name as part of project name works now as it 
+  should (hopefully), also under NT. Directory separators can be 
+  specified either as "/" or "\" 
+
+
+'Snapshot' 2.08 July-18-1999
+----------------------------
+* At the moment, PQMethod 2.08 is not distributed with an 
+  installation routine. Also, the Manual (PQMethod.doc), the readme.txt, 
+  etc. are not yet updated, and therefore not included in the current 
+  2.08 distribution package.
+* Included is an additional program, PQROT.EXE, which provides a high-
+  resolution graphic version of the old 'low resolution' QROTATE module.
+  PQROT also provides enhancements in user-interface for rotation and 
+  also for flagging factors (use Help-Key F1 for descriptions) .
+  PQROT is automatically launched from within PQMethod 2.08 (though
+  the user can as well decide to use the old QROTATE instead), but PQROT 
+  can be used 'standalone' also.
+* The 'Project Name', where necessary with the full path name of the
+  directory where the project's PQMethod files reside, can be provided
+  at the command line, e.g., with
+     PQMethod c:\myqdata\projno1 , 
+  files projno1.dat, projno1.sta, etc. in directory c:\myqdata will 
+  already be opened upon start of PQMethod. (An added file name 
+  extension, e.g., c:\myqdata\projno1.dat, is dropped automatically.)
+  With this added feature it is now possible to use drag&drop or to
+  configure the Windows-Explorer to open .dat files with PQMethod.
+  Path and project name are shown on screen as well as in the output
+  listing of QANALYZE.
+* When QANALYZE outputs the rotated factor loading matrix, sorts are 
+  checked for Zero communalities, and a warning is issued for such
+  cases both on screen and in the .lis. In previous versions, PQMethod
+  would have aborted abnormally when a case with Zero communality was
+  encountered in QVARIMAX. (The probable reason for this situation is
+  that the sort has no variance, i.e. all statements are sorted into 
+  the same category; this sort should be deleted, and the analyses 
+  repeated)
+* Up to version 2.07, principal components (especially the first one) 
+  were computed 'upside down', i.e., with mostly negative signs of 
+  loadings. Though no real 'bug', and absolutely without consequence
+  if a Varimax rotation follows, this unwieldy thing is now resolved.
+* Decimals are printed now with leading Zeroes ('0.123' instead of 
+  ' .123'; resulting from using newer version of GNU Fortran)
+
+Release 2.06 October-22-1997
+----------------------------
+* Added output of a 'timestamp' line at the end of <project>.lis
+  listing file, and corresponding date and time of analysis in the
+  fax.dat output of QANALYZE
+* PC-Version only: Used new G77 compiler configuration that fixed 
+  file i/o bug that consisted in not correctly overwriting existing 
+  (longer) output files with new (shorter) versions; under DOS-only,
+  the bug which is fixed now, could effect FAT corruption.
+
+Release 2.05 October-14-1997
+----------------------------
+* Fixed bug in QENTER that sometimes crashed the program when
+  starting with a new project
+
+Release 2.04 July-30-1997
+-------------------------
+* Fixed bug with case labels in Delete-Case function of QENTER.
+
+Release 2.03 June-20-1997
+-------------------------
+* Redesigned correlation-matrix table. (All former versions listed
+  incomplete _and erroneous_ correlation matrix when there were more 
+  than 32 sorts)
+
+Release 2.02 Beta June-01-1997
+------------------------------
+* Eventually fixed 'easter egg bug' (undetected since 2.0a 
+  by all the eager alpha-testers!). Bug consisted in repeatedly
+  asking user if s/he wanted to change the identification code in the
+  course of entering corrections of pile numbers.
+* Fixed some minor bugs: misleading error messages in QCENT and QPCA;
+  leaving empty .rot undeleted. 
+* QCENT outputs a WARNING message if there is a 'Heywood case' 
+  (communality exceeds unity), and offers the choice either to adjust
+  or not to adjust loadings 
+
+Release 2.01 Beta May-20-1997
+-----------------------------
+* This is where numbering begins. 2.01 replaces Alpha-Test versions
+  2.0a - 2.0f which were not distributed as self-install packages.
+  It is the first version that contains PCA factoring.
+
+
+Changes since the former release, version 1.10, are too many
+to be listed here ....

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+   <language version="1.0" htmlParse="true">
+;
+
+        <!-- misc -->
+        <item id="btnContinue">繼續...</item>
+        <item id="btnclose">關閉</item>
+        <item id="btnHelp">幫助!</item>
+        <item id="btnAgreement">同意</item>
+        <item id="btnNeutral">中立</item>
+        <item id="btnDisagreement">不同意</item>
+        <item id="btnTransfer">提交數據</item>
+        <item id="btnExit">退出</item>
+        <item id="selectItem">請選擇...</item>
+        
+        <!-- Warning when user is trying to leave the page (this item was added for HtmlQ) -->
+        <item id="leaveSiteWarning">你的回答出現了錯誤.</item>
+
+        <!-- HtmlQ only: In-App Back Button -->
+        <item id="backButton">返回</item>
+        <item id="fillInRequiredFields">請填寫所有需要的空白</item>
+
+        <!-- errors -->
+        <item id="errorHead">錯誤!</item>
+        <item id="errorWindowTooSmall">Please maximize your browser for using this application.</item>
+
+        <!-- welcome screen (leave blank to skip screen) -->
+        <item id="welcomeHead">歡迎!</item>
+        <item id="welcomeText">您的數據將以匿名化格式進行進一步的分析處理，並隱去您的個人隱私進行數據結果呈現，感謝您的認真填寫！</item>
+
+        <!-- user login, only displayed if access is restricted (see config-file) -->
+        <item id="loginHead">Access Code</item>
+        <item id="loginText">Please enter the access code for this survey.</item>
+        <item id="loginFormHeader">Access Code</item>
+        <item id="loginPartIdText">Your name or survey id number</item>
+        <item id="loginNoInput">Please enter the access code.</item>
+        <item id="loginInvalidInput">Access code invalid</item>
+        <item id="loginNoConnection">Connection to server failed. Please try again.</item>
+
+        <!-- introduction (leave blank to skip popup) -->
+        <item id="introHead">簡介</item>
+        <item id="introText">本研究旨在通過分析茨林圍社區的退化現象，探討如何在澳門世界遺產地區推動社區的可持續發展。本文將結合國際上城市更新與社區微改造的成功經驗，構建適合澳門的片區更新策略，並探討如何在保護歷史文化遺產的同時促進片區產業多元化的可能。研究將特別關注居民參與和多利益相關者之間的協作，從而促進社區空間的活化和提升居民生活質量。希望為非專業居民提供專業的技術支持的同時，也能向政府提供切實可行的策略選擇。</item>
+
+        <!-- step1: rough sorting into three piles (leave blank to skip popup)-->
+        <item id="step1Head">Step 1 of 5</item>
+        <item id="step1Text">仔細閱讀以下陳述，並將它們分成三堆:一堆是你傾向於不同意 的陳述，一堆是你傾向於同意的卡片，另一堆是其餘的。{br} {br}你可以將卡片拖到三個堆中的一個，或者按鍵盤上的 1、2、3。以後可以更改。{bn} {br}如果您想再次閱讀此說明，請按左下角的幫助按纽。</item>
+
+        <!-- step2: sorting (leave blank to skip popup) -->
+        <item id="step2Head">Step 2 of 5</item>
+        <item id="step2Text">從“同意”牌堆中取牌，並將其放在計分表右侧。接下來，“不同意”牌堆中取卡，並将其放在計分表的左側。按照此程序處理“同意”和“不同意”牌堆中的所有卡片。最後，從“中立”牌堆中取“中立牌，並将其放在計表剩餘的空格中。</item>
+        <item id="step2CondOfInstruc">Give condition of instruction here</item>
+        <item id="step2TextSizeLabel">Text</item>
+        
+
+        <!-- step3: check sorting, only displayed if showStep3== true (see config-file; leave blank to skip popup)-->
+        <item id="step3Head">Step 3 of 5</item>
+        <item id="step3Text">現在你已經把所有的牌都放到計分表上了，請再看一遍分配情况，如果需要的話可以交换牌位牌。</item>
+        <item id="step3CondOfInstruc">Give condition of instruction here</item>
+
+        <!-- step4: comments on best/worst rated statements, only displayed if showStep4== true (see config-file; leave blank to skip popup) -->
+        <item id="step4Head">Step 4 of 5</item>
+        <item id="step4Text">請解釋爲什麼你最同意或最不同意你在“+4”或“-4”下面所寫的以下陳述。</item>
+
+        <!-- step5: dditional questions, only displayed if showStep5== true (see config-file; leave blank to skip popup)-->
+        <item id="step5Head">Step 5 of 5</item>
+        <item id="step5Text">最後，請回答以下關於你的背景的問题。</item>
+
+        <!-- data transfer, only displayed if submitUrl is not blank (see config-file) -->
+        <item id="transferHead">提交數據</item>
+        <item id="transferText">你已經完成了所有問答，請提交。</item>
+        <item id="transferFailed">數據提交失敗，請重試。</item>
+        <item id="transferOk">感謝您使用EaSy HTMLQ!{br}{br}您現在可以關閉瀏覽器窗口了</item>   
+   </language>
